@@ -1,0 +1,29 @@
+﻿@model RegistrationViewModel
+@{
+    ViewData["Title"] = "Registration";
+}
+
+<h1>Registration</h1>
+
+<div class="text-center">
+    <form asp-area="" asp-controller="Auth" asp-action="Registration" method="post">
+        <div>
+            <input asp-for="UserName" placeholder="User Name" />
+        </div>
+        <div>
+            <input asp-for="Email" placeholder="Email" />
+        </div>
+    
+        <div>
+            <input asp-for="Password" placeholder="Password" />
+        </div>
+        <div>
+            <input asp-for="ConfirmPassword" placeholder="Confirm Password" />
+        </div>
+        <span asp-validation-for="UserName"></span><br>
+        <span asp-validation-for="Password"></span><br>
+        <span asp-validation-for="Email"></span><br>
+        <button type="submit">Registration</button>
+    </form>
+    <a asp-controller="Auth" asp-action="Login">Login</a>
+</div>

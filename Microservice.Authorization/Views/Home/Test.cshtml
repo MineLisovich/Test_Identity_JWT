@@ -1,0 +1,25 @@
+﻿@model List<WeatherModel>
+
+@{
+    ViewData["Title"] = "Test";
+}
+
+<h1>Test</h1>
+
+
+<div>
+    @if (Model.Count > 0)
+    {
+        @foreach (var item in Model)
+        {
+            <ul>
+                <li>@item.Date</li>
+                <li>@item.Summary</li>
+                <li>@item.TemperatureC</li>
+                <li>@item.TemperatureF</li>
+            </ul>
+        }
+    }
+
+</div>
+
