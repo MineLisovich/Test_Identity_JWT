@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,8 +28,6 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(conf =>
 builder.Services.ConfigureApplicationCookie(conf =>
 {
     conf.Cookie.Name = "Microcervice.Authorization.Cookie";
-    conf.LoginPath = "/Auth/Login";
-    conf.LogoutPath = "/Auth/Logout";
     conf.ExpireTimeSpan = TimeSpan.FromMinutes(120);
 });
 
@@ -118,6 +117,21 @@ app.Use(async (context, next) =>
     context.Response.Headers.Add("X-Frame-Options", "DENY");
     await next();
 });
+
+app.UseStatusCodePages(async context =>
+{
+   // var request = context.HttpContext.Request;
+    var response =  context.HttpContext.Response;
+    if (response.StatusCode ==  (int)HttpStatusCode.Unauthorized)
+    {
+        response.Redirect("/Auth/Login");
+    }
+    if(response.StatusCode == (int)HttpStatusCode.Forbidden)
+    {
+        response.Redirect("/RedirectStatusCode/Forbidden");
+    }
+});
+
 app.UseAuthentication();
 app.UseAuthorization();
 

@@ -1,6 +1,7 @@
 using Microservice.Admin.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -77,6 +78,16 @@ app.Use(async (context, next) =>
     context.Response.Headers.Add("X-Xss-Protection", "1");
     context.Response.Headers.Add("X-Frame-Options", "DENY");
     await next();
+});
+app.UseStatusCodePages(async context =>
+{
+    var request = context.HttpContext.Request;
+    var response = context.HttpContext.Response;
+
+    if (response.StatusCode == (int)HttpStatusCode.Unauthorized)
+    {
+        response.Redirect("https://localhost:7291/Auth/Login");
+    }
 });
 app.UseAuthentication();
 app.UseAuthorization();

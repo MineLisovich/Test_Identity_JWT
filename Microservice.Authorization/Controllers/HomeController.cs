@@ -29,7 +29,7 @@ namespace Microservice.Authorization.Controllers
             return View();
         }
 
-        [Authorize(Roles = UserRoles.Admin)]
+        [Authorize]
         [HttpGet]
         public  IActionResult UserProfile() 
         {
